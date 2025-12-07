@@ -1,4 +1,5 @@
-# Gruop-project
+# Тест на швидкість друкування
 Груповий проект Фронтенд 12:00
 
-https://miro.com/app/board/uXjVGfRb7r4=/
+Посилання на майн-мап:
+https://miro.com/app/board/uXjVGfRb7r4=/ 
