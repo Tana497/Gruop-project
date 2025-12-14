@@ -1,6 +1,15 @@
-body{
-  padding: 25px;
+.header {
+  display: flex;
+  align-items: center;    
+  gap: 50px;           
 }
-.title {
-	color: #5C6AC4;
+
+.menu {
+  display: flex;            
+  gap: 50px;
+}
+
+.menu p {
+  margin: 0;
+  cursor: pointer;
 }
