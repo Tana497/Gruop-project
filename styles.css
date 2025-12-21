@@ -1,15 +1,69 @@
+body{
+  background-color: #484950;
+}
+
 .header {
   display: flex;
   align-items: center;    
-  gap: 50px;           
+  gap: 50px; 
+  background-color: #585A62;
+  color: #FFFFFF;
+}
+
+.header-image{
+  width: 70px;
+  height: auto;
 }
 
 .menu {
   display: flex;            
-  gap: 50px;
+  gap: 50px;;
+  
+}
+
+.button {
+  background-color: #3D3D3D;
+  color: #FFFFFF;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 45px;
+  font-size: 16px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.4s ease,
+    font-size 0.2s ease,
+    color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #2D2D2D;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.button:active {
+  font-size: 18px;
+  color: #EAFFF0;
+}
+
+
+.input-text input {
+  background-color: #2D2D2D;
+  color: #FFFFFF;
+}
+
+.header-text{
+  background-color: #77967D;
 }
 
 .menu p {
   margin: 0;
   cursor: pointer;
+}
+
+footer{
+  color: #FFFFFF;
+  background-color: #585A62;
 }
