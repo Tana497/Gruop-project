@@ -59,6 +59,22 @@ function typeEffect() {
   }
 }
 
+const subtitle = document.querySelector('.subtitle');
+const subText = subtitle.textContent;
+subtitle.textContent = '';
+
+let j = 0;
+function typeSubtitle() {
+  if (j < subText.length) {
+    subtitle.textContent += subText.charAt(j);
+    j++;
+    setTimeout(typeSubtitle, 40);
+  }
+}
+
+window.addEventListener('load', typeSubtitle);
+
+
 window.addEventListener('load', typeEffect);
 
 function shake(element) {
@@ -82,3 +98,6 @@ settingsBtn.addEventListener('click', (e) => {
 closeSettings.addEventListener('click', () => {
   settingsPanel.classList.remove('active');
 });
+
+
+
