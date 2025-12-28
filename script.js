@@ -1,7 +1,4 @@
 const faders = document.querySelectorAll('.fade-up');
-const settingsBtn = document.querySelector('.menu-item:nth-child(3)');
-const settingsPanel = document.getElementById('settings-panel');
-const closeSettings = document.getElementById('closeSettings');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, index) => {
     if (entry.isIntersecting) {
@@ -12,22 +9,16 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.15 });
-
 faders.forEach(el => observer.observe(el));
 
 const startBtn = document.querySelector('.button');
-
 setInterval(() => {
   startBtn.animate([
     { transform: 'scale(1)' },
     { transform: 'scale(1.05)' },
     { transform: 'scale(1)' }
-  ], {
-    duration: 1200,
-    easing: 'ease-in-out'
-  });
+  ], { duration: 1200, easing: 'ease-in-out' });
 }, 4000);
-
 startBtn.addEventListener('click', () => {
   startBtn.animate([
     { transform: 'scale(1)' },
@@ -37,7 +28,6 @@ startBtn.addEventListener('click', () => {
 });
 
 const input = document.querySelector('.input-text input');
-
 input.addEventListener('input', () => {
   input.animate([
     { transform: 'scale(1)' },
@@ -49,7 +39,6 @@ input.addEventListener('input', () => {
 const title = document.querySelector('.title');
 const text = title.textContent;
 title.textContent = '';
-
 let i = 0;
 function typeEffect() {
   if (i < text.length) {
@@ -62,7 +51,6 @@ function typeEffect() {
 const subtitle = document.querySelector('.subtitle');
 const subText = subtitle.textContent;
 subtitle.textContent = '';
-
 let j = 0;
 function typeSubtitle() {
   if (j < subText.length) {
@@ -72,10 +60,8 @@ function typeSubtitle() {
   }
 }
 
-window.addEventListener('load', typeSubtitle);
-
-
 window.addEventListener('load', typeEffect);
+window.addEventListener('load', typeSubtitle);
 
 function shake(element) {
   element.animate([
@@ -90,14 +76,36 @@ document.getElementById("strtBtn").addEventListener("click", function () {
   document.getElementById("inpfld").value = "";
 });
 
+const settingsBtn = document.querySelector('.menu-item:nth-child(3)');
+const settingsPanel = document.getElementById('settings-panel');
+const closeSettings = document.getElementById('closeSettings');
+
+function positionSettingsPanel() {
+  const rect = settingsBtn.getBoundingClientRect();
+  settingsPanel.style.top = `${rect.bottom + window.scrollY}px`;
+  settingsPanel.style.left = `${rect.left + window.scrollX - 50}px`; 
+}
+
+
+
 settingsBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  settingsPanel.classList.add('active');
+  positionSettingsPanel();
+  settingsPanel.classList.toggle('active');
 });
 
 closeSettings.addEventListener('click', () => {
   settingsPanel.classList.remove('active');
 });
 
+document.addEventListener('click', (e) => {
+  if (!settingsPanel.contains(e.target) && e.target !== settingsBtn) {
+    settingsPanel.classList.remove('active');
+  }
+});
 
-
+window.addEventListener('resize', () => {
+  if (settingsPanel.classList.contains('active')) {
+    positionSettingsPanel();
+  }
+});
