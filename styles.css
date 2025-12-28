@@ -1,13 +1,13 @@
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #484950;
-  color: #FFFFFF;
+* {
+  box-sizing: border-box;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #3f4150, #2c2d36);
+  color: #ffffff;
+  min-height: 100vh;
 }
 
 .header {
@@ -36,86 +36,161 @@ a {
   color: #FFFFFF;
 }
 
+
 .menu {
   display: flex;
   gap: 20px;
 }
 
 .menu-item {
-  padding: 5px 10px;
-  border-radius: 6px;
-  transition: background-color 0.3s;
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: background 0.3s;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+  text-decoration: none;
 }
 
 .menu-item:hover {
-  background-color: #77967D;
+  background: #7ea88b;
 }
 
 .main-content {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 50px 40px;
+  max-width: 520px;
+  width: 100%;
   text-align: center;
-  padding: 50px 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .title {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
+  font-size: 2.4rem;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  color: #cccccc;
+  margin-bottom: 35px;
+  font-size: 1.1rem;
 }
 
 .button {
-  background-color: #3D3D3D;
-  color: #FFFFFF;
-  padding: 14px 30px;
+  background: linear-gradient(135deg, #7ea88b, #5f8f73);
+  color: #ffffff;
+  padding: 15px 40px;
   border: none;
-  border-radius: 45px;
+  border-radius: 40px;
   font-size: 18px;
   cursor: pointer;
-  transition: 
-    background-color 0.3s,
-    transform 0.2s,
-    box-shadow 0.3s;
+  transition: transform 0.2s, box-shadow 0.3s;
 }
 
 .button:hover {
-  background-color: #2D2D2D;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 .button:active {
-  transform: translateY(1px);
-  color: #EAFFF0;
+  transform: scale(0.97);
 }
 
 .input-text input {
-  width: 80%;
-  max-width: 400px;
-  padding: 12px 15px;
-  margin-top: 20px;
-  border: 2px solid #77967D;
-  border-radius: 8px;
-  background-color: #2D2D2D;
-  color: #FFFFFF;
+  width: 100%;
+  padding: 15px 18px;
+  margin-top: 30px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
   font-size: 16px;
+}
+
+.input-text input::placeholder {
+  color: #aaaaaa;
 }
 
 .input-text input:focus {
   outline: none;
-  box-shadow: 0 0 5px #77967D;
+  border-color: #7ea88b;
+  box-shadow: 0 0 10px rgba(126, 168, 139, 0.6);
 }
 
-.input-text input::placeholder {
-  color: #AAAAAA;
+.footer {
+  background: linear-gradient(135deg, #4f515a, #3a3b42);
+  padding: 40px 20px 20px;
+  color: #dddddd;
 }
 
-footer {
+.footer-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.footer-brand h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #ffffff;
+}
+
+.footer-brand p {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #bbbbbb;
+  max-width: 320px;
+}
+
+.footer-contacts h4 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.footer-contacts a {
+  display: block;
+  margin-bottom: 8px;
+  color: #cccccc;
+  text-decoration: none;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.footer-contacts a:hover {
+  color: #7ea88b;
+  transform: translateX(5px);
+}
+
+.footer-copy {
   text-align: center;
-  padding: 15px;
-  background-color: #585A62;
-  color: #FFFFFF;
-  margin-top: 50px;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  margin-top: 30px;
+  font-size: 13px;
+  color: #aaaaaa;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 15px;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer-contacts a:hover {
+    transform: none;
+  }
 }
 
 .fade-up {
