@@ -109,3 +109,8 @@ window.addEventListener('resize', () => {
     positionSettingsPanel();
   }
 });
+document.getElementById('strtBtn').addEventListener('click', function() {
+  window.location.href = 'main.html'; 
+});
+
+
