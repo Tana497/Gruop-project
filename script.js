@@ -110,7 +110,5 @@ window.addEventListener('resize', () => {
   }
 });
 document.getElementById('strtBtn').addEventListener('click', function() {
-  window.location.href = 'main.html'; 
+  document.getElementById('inputField').value = ''; 
 });
-
-
