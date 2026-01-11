@@ -96,6 +96,10 @@ function positionSettingsPanel() {
   settingsPanel.style.left = `${rect.left + window.scrollX - 50}px`; 
 }
 
+function refreshPage() {
+  location.reload();
+}
+
 
 
 settingsBtn.addEventListener('click', (e) => {
@@ -135,5 +139,7 @@ document.getElementById("strtBtn").addEventListener("click", function () {
   input.focus();
 });
 
-document.getElementById("main-menu").addEventListener("click", )
+document.getElementById("main-menu").addEventListener("click", function() {
+  refreshPage();
+});
 
