@@ -27,6 +27,16 @@ startBtn.addEventListener('click', () => {
   ], { duration: 200 });
 });
 
+document.getElementById("strtBtn").addEventListener("click", function () {
+  const card = document.querySelector(".card");
+  const input = document.getElementById("inpfld");
+
+  card.classList.add("typing-mode");
+  input.value = "";
+  input.focus();
+});
+
+
 const input = document.querySelector('.input-text input');
 input.addEventListener('input', () => {
   input.animate([
@@ -109,6 +119,30 @@ window.addEventListener('resize', () => {
     positionSettingsPanel();
   }
 });
-document.getElementById('strtBtn').addEventListener('click', function() {
-  document.getElementById('inputField').value = ''; 
+
+const texts = [
+  "Швидкий бурий лис перестрибує через ледачого пса.",
+  "Практика друку допомагає покращити швидкість і точність.",
+  "SpeedKey — це простий спосіб тренувати навички друку.",
+  "Чим більше ти друкуєш, тим швидше стають твої пальці.",
+  "Клавіатура — інструмент, який потребує щоденних тренувань.",
+  "Сонце світить над містом. Люди поспішають у своїх справах. Вітер колише дерева, а думки стають яснішими з кожним кроком.",
+  "Їжак шукав яблука в жовтому листі. Філіжанка чаю стояла поруч, зігріваючи руки в прохолодний вечір.",
+  "У 2026 році швидкість 75–90 слів/хв вважається хорошою. Пароль: Test_123! Час — 10:45.",
+  "Регулярна практика допомагає мозку й пальцям працювати як єдина система. Кілька хвилин щодня дають кращий результат, ніж довгі, але рідкісні сесії."
+];
+
+document.getElementById("strtBtn").addEventListener("click", function () {
+  const card = document.querySelector(".card");
+  const input = document.getElementById("inpfld");
+  const textBox = document.getElementById("textToType");
+
+  const randomText = texts[Math.floor(Math.random() * texts.length)];
+
+  textBox.textContent = randomText;
+  card.classList.add("typing-mode");
+
+  input.value = "";
+  input.focus();
 });
+

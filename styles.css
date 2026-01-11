@@ -341,3 +341,29 @@ body {
 .menu-item:nth-child(2) {
   display: none;
 }
+
+.card.typing-mode > *:not(.input-text):not(.typing-text) {
+  display: none;
+}
+
+.card.typing-mode {
+  padding: 40px;
+}
+
+.card.typing-mode .input-text input {
+  margin-top: 0;
+  font-size: 20px;
+  padding: 20px;
+}
+
+.typing-text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: #ffffff;
+  text-align: left;
+  background: rgba(0,0,0,0.25);
+  padding: 15px 18px;
+  border-radius: 12px;
+}
+
