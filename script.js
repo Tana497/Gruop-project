@@ -1,3 +1,5 @@
+/* ================= Анімації появи ================= */
+
 const faders = document.querySelectorAll('.fade-up');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, index) => {
@@ -11,91 +13,35 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 faders.forEach(el => observer.observe(el));
 
-const startBtn = document.querySelector('.button');
-setInterval(() => {
-  startBtn.animate([
-    { transform: 'scale(1)' },
-    { transform: 'scale(1.05)' },
-    { transform: 'scale(1)' }
-  ], { duration: 1200, easing: 'ease-in-out' });
-}, 4000);
-startBtn.addEventListener('click', () => {
-  startBtn.animate([
-    { transform: 'scale(1)' },
-    { transform: 'scale(0.9)' },
-    { transform: 'scale(1)' }
-  ], { duration: 200 });
-});
+/* ================= Кнопка "Почати" ================= */
 
-document.getElementById("strtBtn").addEventListener("click", function () {
-  const card = document.querySelector(".card");
-  const input = document.getElementById("inpfld");
+const startBtn = document.getElementById("strtBtn"); // беремо кнопку по ID
+const inputField = document.getElementById("inpfld");
+const card = document.querySelector(".card");
+const textBox = document.getElementById("textToType");
 
-  card.classList.add("typing-mode");
-  input.value = "";
-  input.focus();
-});
+/* ================= Інпут ================= */
 
-
-const input = document.querySelector('.input-text input');
-input.addEventListener('input', () => {
-  input.animate([
+inputField.addEventListener('input', () => {
+  inputField.animate([
     { transform: 'scale(1)' },
     { transform: 'scale(1.02)' },
     { transform: 'scale(1)' }
   ], { duration: 120 });
 });
 
-const title = document.querySelector('.title');
-const text = title.textContent;
-title.textContent = '';
-let i = 0;
-function typeEffect() {
-  if (i < text.length) {
-    title.textContent += text.charAt(i);
-    i++;
-    setTimeout(typeEffect, 60);
-  }
-}
+/* ================= Панель налаштувань ================= */
 
-const subtitle = document.querySelector('.subtitle');
-const subText = subtitle.textContent;
-subtitle.textContent = '';
-let j = 0;
-function typeSubtitle() {
-  if (j < subText.length) {
-    subtitle.textContent += subText.charAt(j);
-    j++;
-    setTimeout(typeSubtitle, 40);
-  }
-}
-
-window.addEventListener('load', typeEffect);
-window.addEventListener('load', typeSubtitle);
-
-function shake(element) {
-  element.animate([
-    { transform: 'translateX(0)' },
-    { transform: 'translateX(-5px)' },
-    { transform: 'translateX(5px)' },
-    { transform: 'translateX(0)' }
-  ], { duration: 300 });
-}
-
-document.getElementById("strtBtn").addEventListener("click", function () {
-  document.getElementById("inpfld").value = "";
-});
-
-const settingsBtn = document.querySelector('.menu-item:nth-child(3)');
+const settingsBtn = document.getElementById('settingsBtn');
 const settingsPanel = document.getElementById('settings-panel');
 const closeSettings = document.getElementById('closeSettings');
+const timeSelect = settingsPanel.querySelector('select'); // перший select у панелі
 
 function positionSettingsPanel() {
   const rect = settingsBtn.getBoundingClientRect();
   settingsPanel.style.top = `${rect.bottom + window.scrollY}px`;
-  settingsPanel.style.left = `${rect.left + window.scrollX - 50}px`; 
+  settingsPanel.style.left = `${rect.left + window.scrollX - 50}px`;
 }
-
 
 settingsBtn.addEventListener('click', (e) => {
   e.preventDefault();
@@ -119,32 +65,73 @@ window.addEventListener('resize', () => {
   }
 });
 
-fetch("data.txt")
-  .then(response => response.text())
-  .then(data => {
-    texts = data
-      .split(/\r?\n/)        // розбиваємо по рядках
-      .map(line => line.trim())
-      .filter(line => line !== "");
+/* ================= Таймер ================= */
 
-    console.log("Texts loaded:", texts);
-  })
-  .catch(err => console.error("Failed to load data.txt", err));
+let timerId = null;
+let timerDiv = null;
 
-  document.getElementById("strtBtn").addEventListener("click", function () {
-    if (texts.length === 0) return;
-  
-    const card = document.querySelector(".card");
-    const input = document.getElementById("inpfld");
-    const textBox = document.getElementById("textToType");
-  
-    const randomText = texts[Math.floor(Math.random() * texts.length)];
-  
-    textBox.textContent = randomText;
-    card.classList.add("typing-mode");
-  
-    input.value = "";
-    input.focus();
-  });
-  
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${s < 10 ? "0" : ""}${s}`;
+}
 
+function startTimer() {
+  clearInterval(timerId);
+
+  let timeLeft = Number(timeSelect.value);
+
+  if (!timerDiv) {
+    timerDiv = document.createElement("div");
+    timerDiv.id = "timer";
+    timerDiv.style.fontSize = "24px";
+    timerDiv.style.textAlign = "center";
+    timerDiv.style.marginBottom = "10px";
+    card.prepend(timerDiv);
+  }
+
+  timerDiv.textContent = `⏱ ${formatTime(timeLeft)}`;
+  timerDiv.style.display = "block";
+  inputField.disabled = false;
+
+  timerId = setInterval(() => {
+    timeLeft--;
+    timerDiv.textContent = `⏱ ${formatTime(timeLeft)}`;
+
+    if (timeLeft <= 0) {
+      clearInterval(timerId);
+      timerDiv.textContent = "⏱ Час вийшов!";
+      inputField.disabled = true;
+    }
+  }, 1000);
+}
+
+/* ================= Завантаження текстів ================= */
+
+let texts = [
+  "Швидкий бурий лис перестрибує через ледачого пса.",
+  "Практика друку допомагає покращити швидкість і точність.",
+  "SpeedKey — це простий спосіб тренувати навички друку.",
+  "Чим більше ти друкуєш, тим швидше стають твої пальці.",
+  "Клавіатура — інструмент, який потребує щоденних тренувань.",
+  "Сонце світить над містом. Люди поспішають у своїх справах. Вітер колише дерева, а думки стають яснішими з кожним кроком.",
+  "Їжак шукав яблука в жовтому листі. Філіжанка чаю стояла поруч, зігріваючи руки в прохолодний вечір.",
+  "У 2026 році швидкість 75–90 слів/хв вважається хорошою. Пароль: Test_123! Час — 10:45.",
+  "Регулярна практика допомагає мозку й пальцям працювати як єдина система. Кілька хвилин щодня дають кращий результат, ніж довгі, але рідкісні сесії."
+];
+
+/* ================= Почати тест ================= */
+
+startBtn.addEventListener("click", () => {
+  if (texts.length === 0) return;
+
+  const randomText = texts[Math.floor(Math.random() * texts.length)];
+  textBox.textContent = randomText;
+
+  card.classList.add("typing-mode");
+  inputField.value = "";
+  inputField.disabled = false;
+  inputField.focus();
+
+  startTimer(); // запускаємо таймер
+});
