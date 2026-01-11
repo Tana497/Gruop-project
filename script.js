@@ -96,45 +96,6 @@ function positionSettingsPanel() {
   settingsPanel.style.left = `${rect.left + window.scrollX - 50}px`; 
 }
 
-let timerId;
-let timeLeft = 0;
-let timer = null;
-
-function formatTime(sec) {
-  const m = Math.floor(sec / 60);
-  const s = sec % 60;
-  return `${m}:${s < 10 ? "0" : ""}${s}`;
-}
-
-function startTimer() {
-  clearInterval(timerId);
-
-  timeLeft = Number(timeSelect.value);
-
-  if (!timer) {
-    timer = document.createElement("div");
-    timer.id = "timer";
-    timer.style.fontSize = "24px";
-    timer.style.textAlign = "center";
-    timer.style.marginBottom = "10px";
-    card.prepend(timer);
-  }
-
-  timer.textContent = `⏱ ${formatTime(timeLeft)}`;
-  timer.style.display = "block";
-
-  timerId = setInterval(() => {
-    timeLeft--;
-    timer.textContent = `⏱ ${formatTime(timeLeft)}`;
-
-    if (timeLeft <= 0) {
-      clearInterval(timerId);
-      timer.textContent = "⏱ Час вийшов!";
-      inputField.disabled = true;
-    }
-  }, 1000);
-}
-
 
 settingsBtn.addEventListener('click', (e) => {
   e.preventDefault();
