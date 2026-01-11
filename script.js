@@ -96,10 +96,6 @@ function positionSettingsPanel() {
   settingsPanel.style.left = `${rect.left + window.scrollX - 50}px`; 
 }
 
-function refreshPage() {
-  location.reload();
-}
-
 
 
 settingsBtn.addEventListener('click', (e) => {
@@ -124,22 +120,31 @@ window.addEventListener('resize', () => {
   }
 });
 
+fetch("data.txt")
+  .then(response => response.text())
+  .then(data => {
+    texts = data
+      .split(/\r?\n/)        // розбиваємо по рядках
+      .map(line => line.trim())
+      .filter(line => line !== "");
 
-document.getElementById("strtBtn").addEventListener("click", function () {
-  const card = document.querySelector(".card");
-  const input = document.getElementById("inpfld");
-  const textBox = document.getElementById("textToType");
+    console.log("Texts loaded:", texts);
+  })
+  .catch(err => console.error("Failed to load data.txt", err));
 
-  const randomText = texts[Math.floor(Math.random() * texts.length)];
-
-  textBox.textContent = randomText;
-  card.classList.add("typing-mode");
-
-  input.value = "";
-  input.focus();
-});
-
-document.getElementById("main-menu").addEventListener("click", function() {
-  refreshPage();
-});
-
+  document.getElementById("strtBtn").addEventListener("click", function () {
+    if (texts.length === 0) return;
+  
+    const card = document.querySelector(".card");
+    const input = document.getElementById("inpfld");
+    const textBox = document.getElementById("textToType");
+  
+    const randomText = texts[Math.floor(Math.random() * texts.length)];
+  
+    textBox.textContent = randomText;
+    card.classList.add("typing-mode");
+  
+    input.value = "";
+    input.focus();
+  });
+  
