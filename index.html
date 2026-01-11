@@ -20,7 +20,7 @@
     </nav>
   </header>
 
-  <div id="settings-panel" class="settings-dropdown">
+    <div id="settings-panel" class="settings-dropdown">
     <div class="settings-header">
       <h3>Налаштування ⚙️</h3>
       <button id="closeSettings" class="close-btn">✖</button>
@@ -28,11 +28,11 @@
     <div class="settings-content">
       <label>
         ⏱ Час тесту:
-        <select>
-          <option>30 секунд</option>
-          <option>60 секунд</option>
-          <option>120 секунд</option>
-        </select>
+        <select id="timeSelect">
+        <option value="30">30 секунд</option>
+        <option value="60">60 секунд</option>
+        <option value="120">120 секунд</option>
+    </select>
       </label>
       <label>
         🌐 Мова:
@@ -43,7 +43,7 @@
       </label>
     </div>
   </div>
-
+  <main class="main-content">
   <main class="main-content">
     <div class="card fade-up">
       <h1 class="title">Ласкаво просимо до SpeedKey</h1>
