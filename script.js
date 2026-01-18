@@ -134,5 +134,29 @@ fetch("data.txt")
   startTimer(); // запускаємо таймер
 });
 
+function loadRandomText() {
+  if (texts.length === 0) return;
 
+  const randomText = texts[Math.floor(Math.random() * texts.length)];
+  textBox.textContent = randomText;
 
+  inputField.value = "";
+  inputField.focus();
+}
+
+startBtn.addEventListener("click", function () {
+  card.classList.add("typing-mode");
+  inputField.disabled = false;
+
+  loadRandomText();
+  startTimer();
+});
+
+inputField.addEventListener("input", () => {
+  const typedText = inputField.value;
+  const targetText = textBox.textContent;
+
+  if (typedText === targetText) {
+    loadRandomText();
+  }
+});
