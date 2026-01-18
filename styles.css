@@ -367,3 +367,28 @@ body {
   border-radius: 12px;
 }
 
+#errorMsg {
+  color: #ff4d4d;
+  font-size: 14px;
+  margin-top: 6px;
+  min-height: 18px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+#errorMsg.show {
+  opacity: 1;
+}
+
+input.error {
+  border-color: #ff4d4d;
+  animation: shake 0.2s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
