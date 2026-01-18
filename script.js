@@ -108,22 +108,20 @@ function startTimer() {
 
 /* ================= Завантаження текстів ================= */
 
-let texts = [
-  "Швидкий бурий лис перестрибує через ледачого пса.",
-  "Практика друку допомагає покращити швидкість і точність.",
-  "SpeedKey — це простий спосіб тренувати навички друку.",
-  "Чим більше ти друкуєш, тим швидше стають твої пальці.",
-  "Клавіатура — інструмент, який потребує щоденних тренувань.",
-  "Сонце світить над містом. Люди поспішають у своїх справах. Вітер колише дерева, а думки стають яснішими з кожним кроком.",
-  "Їжак шукав яблука в жовтому листі. Філіжанка чаю стояла поруч, зігріваючи руки в прохолодний вечір.",
-  "У 2026 році швидкість 75–90 слів/хв вважається хорошою. Пароль: Test_123! Час — 10:45.",
-  "Регулярна практика допомагає мозку й пальцям працювати як єдина система. Кілька хвилин щодня дають кращий результат, ніж довгі, але рідкісні сесії."
-];
+fetch("data.txt")
+  .then(response => response.text())
+  .then(data => {
+    texts = data
+      .split(/\r?\n/)        // розбиваємо по рядках
+      .map(line => line.trim())
+      .filter(line => line !== "");
 
-/* ================= Почати тест ================= */
+    console.log("Texts loaded:", texts);
+  })
+  .catch(err => console.error("Failed to load data.txt", err));
 
-startBtn.addEventListener("click", () => {
-  if (texts.length === 0) return;
+  document.getElementById("strtBtn").addEventListener("click", function () {
+    if (texts.length === 0) return;
 
   const randomText = texts[Math.floor(Math.random() * texts.length)];
   textBox.textContent = randomText;
@@ -135,3 +133,6 @@ startBtn.addEventListener("click", () => {
 
   startTimer(); // запускаємо таймер
 });
+
+
+
