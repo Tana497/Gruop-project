@@ -152,11 +152,41 @@ startBtn.addEventListener("click", function () {
   startTimer();
 });
 
+const errorMsg = document.getElementById("errorMsg");
+
 inputField.addEventListener("input", () => {
   const typedText = inputField.value;
   const targetText = textBox.textContent;
 
+  const currentIndex = typedText.length - 1;
+
+  if (
+    currentIndex >= 0 &&
+    typedText[currentIndex] !== targetText[currentIndex]
+  ) {
+    errorMsg.textContent = "❌ Помилка! Неправильна літера";
+    errorMsg.classList.add("show");
+    inputField.classList.add("error");
+
+    inputField.value = typedText.slice(0, -1);
+
+    setTimeout(() => {
+      inputField.classList.remove("error");
+      errorMsg.classList.remove("show");
+    }, 500);
+
+    return;
+  }
+
   if (typedText === targetText) {
+    errorMsg.textContent = "✅ Чудово!";
+    errorMsg.classList.add("show");
+
+    setTimeout(() => {
+      errorMsg.classList.remove("show");
+    }, 800);
+
     loadRandomText();
   }
 });
+
