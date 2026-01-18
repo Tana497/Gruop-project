@@ -1,12 +1,91 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Ваш результат</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-      <h1 class="title">Hello World! </h1>
-      <p id="currentTime"></p>
-      <script src="script.js"></script>
-  </body>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Результат</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .result-card {
+      max-width: 420px;
+      margin: 80px auto;
+      padding: 40px 30px;
+      text-align: center;
+      animation: fadeUp 0.6s ease;
+    }
+
+    .score {
+      font-size: 64px;
+      font-weight: 700;
+      margin: 20px 0;
+      color: #4caf50;
+    }
+
+    .message {
+      font-size: 18px;
+      opacity: 0.85;
+      margin-bottom: 30px;
+    }
+
+    .btns {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card result-card">
+    <h1>🏁 Готово!</h1>
+
+    <div class="score" id="scoreValue">0</div>
+    <div class="message" id="message"></div>
+
+    <div class="btns">
+      <button onclick="restart()">🔄 Ще раз</button>
+      <button onclick="goHome()">🏠 Головна</button>
+    </div>
+  </div>
+
+  <script>
+    const score = Number(localStorage.getItem("typingScore")) || 0;
+
+    document.getElementById("scoreValue").textContent = score;
+
+    const messageEl = document.getElementById("message");
+
+    if (score === 0) {
+      messageEl.textContent = "Не засмучуйся — головне почати 💪";
+    } else if (score < 5) {
+      messageEl.textContent = "Непоганий старт! Продовжуй тренуватись 🙂";
+    } else if (score < 10) {
+      messageEl.textContent = "Гарний результат! 🚀";
+    } else {
+      messageEl.textContent = "🔥 Відмінно! Ти дуже швидкий!";
+    }
+
+    function restart() {
+      localStorage.removeItem("typingScore");
+      window.location.href = "index.html";
+    }
+
+    function goHome() {
+      localStorage.removeItem("typingScore");
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
 </html>
+
