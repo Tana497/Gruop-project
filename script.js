@@ -1,3 +1,5 @@
+let score = 0;
+
 /* ================= Анімації появи ================= */
 
 const faders = document.querySelectorAll('.fade-up');
@@ -100,9 +102,15 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timerId);
-      timerDiv.textContent = "⏱ Час вийшов!";
       inputField.disabled = true;
+
+  // зберігаємо кількість балів
+      localStorage.setItem("typingScore", score);
+
+  // переходимо на фінальний екран
+      window.location.href = "finish-screen.html";
     }
+
   }, 1000);
 }
 
@@ -179,6 +187,9 @@ inputField.addEventListener("input", () => {
   }
 
   if (typedText === targetText) {
+    score++; // ✅ +1 бал за правильне речення
+    console.log("Score:", score);
+
     errorMsg.textContent = "✅ Чудово!";
     errorMsg.classList.add("show");
 
@@ -188,5 +199,6 @@ inputField.addEventListener("input", () => {
 
     loadRandomText();
   }
+
 });
 
