@@ -1,30 +1,32 @@
-let score = 0;
+let totalChars = 0; 
+let texts = [];     
+let testDuration = 0;
+let timerId = null;
 
-/* ================= Анімації появи ================= */
-
+// ================= Анімації появи =================
 const faders = document.querySelectorAll('.fade-up');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, index) => {
     if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.classList.add('visible');
-      }, index * 150);
+      setTimeout(() => entry.target.classList.add('visible'), index * 150);
       observer.unobserve(entry.target);
     }
   });
 }, { threshold: 0.15 });
 faders.forEach(el => observer.observe(el));
 
-/* ================= Кнопка "Почати" ================= */
-
-const startBtn = document.getElementById("strtBtn"); // беремо кнопку по ID
+// ================= Елементи =================
+const startBtn = document.getElementById("strtBtn");
 const inputField = document.getElementById("inpfld");
 const card = document.querySelector(".card");
 const textBox = document.getElementById("textToType");
+const errorMsg = document.getElementById("errorMsg");
 
-/* ================= Інпут ================= */
-
+// ================= Інпут =================
+inputField.disabled = true;
 inputField.addEventListener('input', () => {
+  if (inputField.disabled) return; 
+
   inputField.animate([
     { transform: 'scale(1)' },
     { transform: 'scale(1.02)' },
@@ -32,12 +34,12 @@ inputField.addEventListener('input', () => {
   ], { duration: 120 });
 });
 
-/* ================= Панель налаштувань ================= */
 
+// ================= Панель налаштувань =================
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsPanel = document.getElementById('settings-panel');
 const closeSettings = document.getElementById('closeSettings');
-const timeSelect = settingsPanel.querySelector('select'); // перший select у панелі
+const timeSelect = settingsPanel.querySelector('select');
 
 function positionSettingsPanel() {
   const rect = settingsBtn.getBoundingClientRect();
@@ -45,31 +47,25 @@ function positionSettingsPanel() {
   settingsPanel.style.left = `${rect.left + window.scrollX - 50}px`;
 }
 
-settingsBtn.addEventListener('click', (e) => {
+settingsBtn.addEventListener('click', e => {
   e.preventDefault();
   positionSettingsPanel();
   settingsPanel.classList.toggle('active');
 });
 
-closeSettings.addEventListener('click', () => {
-  settingsPanel.classList.remove('active');
-});
+closeSettings.addEventListener('click', () => settingsPanel.classList.remove('active'));
 
-document.addEventListener('click', (e) => {
+document.addEventListener('click', e => {
   if (!settingsPanel.contains(e.target) && e.target !== settingsBtn) {
     settingsPanel.classList.remove('active');
   }
 });
 
 window.addEventListener('resize', () => {
-  if (settingsPanel.classList.contains('active')) {
-    positionSettingsPanel();
-  }
+  if (settingsPanel.classList.contains('active')) positionSettingsPanel();
 });
 
-/* ================= Таймер ================= */
-
-let timerId = null;
+// ================= Таймер =================
 let timerDiv = null;
 
 function formatTime(sec) {
@@ -80,8 +76,8 @@ function formatTime(sec) {
 
 function startTimer() {
   clearInterval(timerId);
-
-  let timeLeft = Number(timeSelect.value);
+  testDuration = Number(timeSelect.value);
+  let timeLeft = testDuration;
 
   if (!timerDiv) {
     timerDiv = document.createElement("div");
@@ -95,6 +91,7 @@ function startTimer() {
   timerDiv.textContent = `⏱ ${formatTime(timeLeft)}`;
   timerDiv.style.display = "block";
   inputField.disabled = false;
+  inputField.focus();
 
   timerId = setInterval(() => {
     timeLeft--;
@@ -102,103 +99,83 @@ function startTimer() {
 
     if (timeLeft <= 0) {
       clearInterval(timerId);
-      inputField.disabled = true;
+      const minutes = testDuration / 60;
+      const wpm = Math.round((totalChars / 5) / minutes);
 
-  // зберігаємо кількість балів
-      localStorage.setItem("typingScore", score);
+      localStorage.setItem("typingWPM", wpm);
+      localStorage.setItem("typingChars", totalChars);
 
-  // переходимо на фінальний екран
       window.location.href = "finish-screen.html";
     }
-
   }, 1000);
 }
 
-/* ================= Завантаження текстів ================= */
-
+// ================= Завантаження текстів =================
 fetch("data.txt")
   .then(response => response.text())
   .then(data => {
     texts = data
-      .split(/\r?\n/)        // розбиваємо по рядках
+      .split(/\r?\n/)
       .map(line => line.trim())
       .filter(line => line !== "");
-
-    console.log("Texts loaded:", texts);
   })
   .catch(err => console.error("Failed to load data.txt", err));
 
-  document.getElementById("strtBtn").addEventListener("click", function () {
-    if (texts.length === 0) return;
-
-  const randomText = texts[Math.floor(Math.random() * texts.length)];
-  textBox.textContent = randomText;
-
-  card.classList.add("typing-mode");
-  inputField.value = "";
-  inputField.disabled = false;
-  inputField.focus();
-
-  startTimer(); // запускаємо таймер
-});
-
+// ================= Функції для тексту =================
 function loadRandomText() {
   if (texts.length === 0) return;
-
   const randomText = texts[Math.floor(Math.random() * texts.length)];
   textBox.textContent = randomText;
-
   inputField.value = "";
   inputField.focus();
 }
 
-startBtn.addEventListener("click", function () {
-  card.classList.add("typing-mode");
-  inputField.disabled = false;
+startBtn.addEventListener("click", () => {
+  if (texts.length === 0) return;
 
+  card.classList.add("typing-mode");
+  totalChars = 0;           
+  inputField.dataset.correct = 0;
+  inputField.disabled = false;  
   loadRandomText();
   startTimer();
 });
 
-const errorMsg = document.getElementById("errorMsg");
 
+// ================= Перевірка введеного тексту =================
 inputField.addEventListener("input", () => {
   const typedText = inputField.value;
   const targetText = textBox.textContent;
 
-  const currentIndex = typedText.length - 1;
+  let correctUpTo = 0;
+  for (let i = 0; i < typedText.length; i++) {
+    if (typedText[i] === targetText[i]) correctUpTo++;
+    else break; // рахувати тільки до першої помилки
+  }
 
-  if (
-    currentIndex >= 0 &&
-    typedText[currentIndex] !== targetText[currentIndex]
-  ) {
+  if (correctUpTo > 0) {
+    totalChars += correctUpTo - (inputField.dataset.correct ? Number(inputField.dataset.correct) : 0);
+  }
+
+  inputField.dataset.correct = correctUpTo;
+
+  if (typedText[typedText.length - 1] !== targetText[typedText.length - 1]) {
     errorMsg.textContent = "❌ Помилка! Неправильна літера";
     errorMsg.classList.add("show");
     inputField.classList.add("error");
-
     inputField.value = typedText.slice(0, -1);
-
     setTimeout(() => {
-      inputField.classList.remove("error");
       errorMsg.classList.remove("show");
+      inputField.classList.remove("error");
     }, 500);
-
     return;
   }
 
   if (typedText === targetText) {
-    score++; // ✅ +1 бал за правильне речення
-    console.log("Score:", score);
-
-    errorMsg.textContent = "✅ Чудово!";
+    errorMsg.textContent = "Чудово!";
     errorMsg.classList.add("show");
-
-    setTimeout(() => {
-      errorMsg.classList.remove("show");
-    }, 800);
-
+    setTimeout(() => errorMsg.classList.remove("show"), 800);
     loadRandomText();
+    inputField.dataset.correct = 0;
   }
-
 });
-
