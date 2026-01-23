@@ -5,12 +5,38 @@
   <title>Результат</title>
   <link rel="stylesheet" href="styles.css">
   <style>
+    body {
+      background: linear-gradient(135deg, #2c2d36, #3f4150);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
     .result-card {
       max-width: 420px;
       margin: 80px auto;
       padding: 40px 30px;
       text-align: center;
-      animation: fadeUp 0.6s ease;
+      border-radius: 20px;
+      background: #2c2d36;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      animation: fadeUp 0.8s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card::before {
+      content: "✨";
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      font-size: 80px;
+      opacity: 0.2;
+      animation: floatStars 4s infinite linear;
+    }
+
+    @keyframes floatStars {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(10px, 10px); }
+      100% { transform: translate(0, 0); }
     }
 
     .score {
@@ -18,6 +44,14 @@
       font-weight: 700;
       margin: 20px 0;
       color: #4caf50;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+      animation: pop 0.5s ease;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      70% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
     }
 
     .message {
@@ -32,6 +66,32 @@
       justify-content: center;
     }
 
+    .btns button {
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .btns button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .btns button:first-child {
+      background: #7ea88b;
+      color: #ffffff;
+    }
+
+    .btns button:last-child {
+      background: #7ea88b;
+      color: #ffffff;
+    }
+
     @keyframes fadeUp {
       from {
         opacity: 0;
@@ -42,6 +102,7 @@
         transform: translateY(0);
       }
     }
+
   </style>
 </head>
 <body>
@@ -50,42 +111,43 @@
     <h1>🏁 Готово!</h1>
 
     <div class="score" id="scoreValue">0</div>
+    <p>Слів за хвилину</p>
     <div class="message" id="message"></div>
 
     <div class="btns">
-      <button onclick="restart()">🔄 Ще раз</button>
+      <button onclick="restart()">🔄 Почати заново</button>
       <button onclick="goHome()">🏠 Головна</button>
     </div>
   </div>
 
-  <script>
-    const score = Number(localStorage.getItem("typingScore")) || 0;
+<script>
+  const wpm = Number(localStorage.getItem("typingWPM")) || 0;
+  const chars = Number(localStorage.getItem("typingChars")) || 0;
 
-    document.getElementById("scoreValue").textContent = score;
+  document.getElementById("scoreValue").textContent = wpm;
 
-    const messageEl = document.getElementById("message");
+  const messageEl = document.getElementById("message");
 
-    if (score === 0) {
-      messageEl.textContent = "Не засмучуйся — головне почати 💪";
-    } else if (score < 35) {
-      messageEl.textContent = "Непоганий старт! Продовжуй тренуватись 🙂";
-    } else if (score < 50) {
-      messageEl.textContent = "Гарний результат! 🚀";
-    } else {
-      messageEl.textContent = "🔥 Відмінно! Ти дуже швидкий!";
-    }
+  if (wpm === 0) {
+    messageEl.textContent = "Не засмучуйся — головне почати 💪";
+  } else if (wpm < 30) {
+    messageEl.textContent = "Непоганий старт! Продовжуй тренуватись 🙂";
+  } else if (wpm < 60) {
+    messageEl.textContent = "Гарний результат! 🚀";
+  } else {
+    messageEl.textContent = "🔥 Відмінно! Ти дуже швидкий!";
+  }
 
-    function restart() {
-      localStorage.removeItem("typingScore");
-      window.location.href = "index.html";
-    }
+  function restart() {
+    localStorage.removeItem("typingWPM");
+    localStorage.removeItem("typingChars");
+    window.location.href = "index.html";
+  }
 
-    function goHome() {
-      localStorage.removeItem("typingScore");
-      window.location.href = "index.html";
-    }
-  </script>
+  function goHome() {
+    restart();
+  }
+</script>
 
 </body>
 </html>
-
